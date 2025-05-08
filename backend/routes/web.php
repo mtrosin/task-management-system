@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Home');
-});
+use App\Http\Controllers\TaskController;
+
+Route::resource('tasks', TaskController::class);
