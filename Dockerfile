@@ -15,7 +15,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Create working directory
 WORKDIR /var/www
 
-COPY backend/entrypoint.sh /entrypoint.sh
+COPY code/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]

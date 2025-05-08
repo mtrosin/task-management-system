@@ -7,7 +7,7 @@ services:
     container_name: laravel-app
     working_dir: /var/www
     volumes:
-      - ./backend:/var/www
+      - ./code:/var/www
     ports:
       - "8000:8000"
       - "5173:5173"
