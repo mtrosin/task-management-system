@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\TaskService;
+use Inertia\Inertia;
 
 class TaskController extends Controller
 {
@@ -14,11 +15,16 @@ class TaskController extends Controller
         $this->taskService = $service;
     }
 
+    // ✅ Show task list in Inertia/Vue
     public function index()
     {
-        return response()->json($this->taskService->listTasks());
+        $tasks = $this->taskService->listTasks();
+        return Inertia::render('Tasks', [
+            'tasks' => $tasks
+        ]);
     }
 
+    // ✅ Accept form submission from Inertia form
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -26,12 +32,18 @@ class TaskController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        return response()->json($this->taskService->createTask($data), 201);
+        $this->taskService->createTask($data);
+
+        return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
     }
 
+    // ✅ Optional: show a single task in an Inertia page
     public function show($id)
     {
-        return response()->json($this->taskService->getTask($id));
+        $task = $this->taskService->getTask($id);
+        return Inertia::render('Tasks/Show', [
+            'task' => $task
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -42,12 +54,14 @@ class TaskController extends Controller
             'completed' => 'boolean',
         ]);
 
-        return response()->json($this->taskService->updateTask($id, $data));
+        $this->taskService->updateTask($id, $data);
+
+        return redirect()->back()->with('success', 'Task updated!');
     }
 
     public function destroy($id)
     {
         $this->taskService->deleteTask($id);
-        return response()->noContent();
+        return redirect()->back()->with('success', 'Task deleted!');
     }
 }
