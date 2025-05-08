@@ -11,13 +11,8 @@
             <v-card-actions>
                 <v-spacer />
                 <v-btn text @click="close">Cancel</v-btn>
-                <v-btn
-                color="primary"
-                :loading="form.processing"
-                :disabled="form.processing"
-                @click="submit"
-                >
-                Save
+                <v-btn color="primary" :loading="form.processing" :disabled="form.processing" @click="submit">
+                    Save
                 </v-btn>
             </v-card-actions>
         </v-card>

@@ -1,14 +1,7 @@
 <template>
     <v-app>
         <!-- Global loading bar -->
-        <v-progress-linear
-        v-if="loading.active"
-        indeterminate
-        color="primary"
-        absolute
-        top
-        height="3"
-        />
+        <v-progress-linear v-if="loading.active" indeterminate color="primary" absolute top height="3" />
 
         <!-- App Bar -->
         <v-app-bar app color="primary" dark>

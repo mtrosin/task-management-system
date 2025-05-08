@@ -31,42 +31,20 @@
             </v-chip>
           </td>
           <td>
-            <!-- Toggle complete -->
-            <v-btn icon small :color="task.completed ? 'grey' : 'green'" @click="toggleComplete(task)">
-              <v-icon size="18">
-                {{ task.completed ? 'mdi-checkbox-blank-outline' : 'mdi-checkbox-marked' }}
-              </v-icon>
-            </v-btn>
-
-            <!-- Edit -->
-            <v-btn icon small color="blue" @click="openEdit(task)">
-              <v-icon size="18">mdi-pencil</v-icon>
-            </v-btn>
-
-            <!-- Delete -->
-            <v-btn icon small color="red" @click="remove(task.id)">
-              <v-icon size="18">mdi-delete</v-icon>
-            </v-btn>
+            <TaskActions
+              :task="task"
+              @toggle="toggleComplete(task)"
+              @edit="openEdit(task)"
+              @delete="remove(task.id)"
+            />
           </td>
         </tr>
       </tbody>
     </v-table>
 
-    <!-- Delete Success Snackbar -->
-    <v-snackbar v-model="snackbarDelete" :timeout="3000" color="success" top>
-      Task deleted successfully!
-      <template #actions>
-        <v-btn text @click="snackbarDelete = false">Close</v-btn>
-      </template>
-    </v-snackbar>
-
-    <!-- Complete Toggle Snackbar -->
-    <v-snackbar v-model="snackbarComplete" :timeout="3000" color="success" top>
-      Task status updated!
-      <template #actions>
-        <v-btn text @click="snackbarComplete = false">Close</v-btn>
-      </template>
-    </v-snackbar>
+    <Snackbar v-model="snackbarDelete" message="Task deleted!" />
+    <Snackbar v-model="snackbarComplete" message="Status updated!" />
+    
   </v-container>
 </template>
 
@@ -75,6 +53,7 @@ import { ref } from 'vue'
 import { Inertia } from '@inertiajs/inertia'
 import TaskModal from '@/Components/TaskModal.vue'
 import EditTaskModal from '@/Components/EditTaskModal.vue'
+import TaskActions from '@/Components/TaskActions.vue'
 
 // Props from Laravel
 defineProps({ tasks: Array })
