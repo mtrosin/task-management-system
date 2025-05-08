@@ -172,4 +172,23 @@ class TaskController extends Controller
         return redirect()->back()
             ->with('success', 'Task deleted successfully!');
     }
+
+    public function trash()
+    {
+        $tasks = $this->taskService->listTasks(withTrashed: true)
+                                ->whereNotNull('deleted_at');
+        return Inertia::render('Trash', compact('tasks'));
+    }
+
+    public function restore($id)
+    {
+        $this->taskService->restoreTask($id);
+        return back()->with('success', 'Task restored.');
+    }
+
+    public function forceDelete($id)
+    {
+        $this->taskService->forceDeleteTask($id);
+        return back()->with('success', 'Task permanently deleted.');
+    }
 }

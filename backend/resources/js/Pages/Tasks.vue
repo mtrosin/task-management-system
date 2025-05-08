@@ -2,10 +2,17 @@
   <v-container class="pt-14 pb-10">
     <h1 class="text-h4 mb-6 text-center">Your Tasks</h1>
 
-    <v-btn color="primary" class="mb-6" @click="showAddModal = true">
-      <v-icon left>mdi-plus</v-icon>
-      Add New Task
-    </v-btn>
+    <div class="d-flex align-center mb-6">
+      <v-btn color="primary" class="me-4" @click="showAddModal = true">
+        <v-icon left>mdi-plus</v-icon>
+        Add New Task
+      </v-btn>
+
+      <v-btn text color="grey" @click="visitTrash">
+        <v-icon left>mdi-trash-can-outline</v-icon>
+        View Trash
+      </v-btn>
+    </div>
 
     <!-- Add and Edit modals -->
     <TaskModal v-model="showAddModal" @success="reload" />
@@ -31,12 +38,7 @@
             </v-chip>
           </td>
           <td>
-            <TaskActions
-              :task="task"
-              @toggle="toggleComplete(task)"
-              @edit="openEdit(task)"
-              @delete="remove(task.id)"
-            />
+            <TaskActions :task="task" @toggle="toggleComplete(task)" @edit="openEdit(task)" @delete="remove(task.id)" />
           </td>
         </tr>
       </tbody>
@@ -44,7 +46,7 @@
 
     <Snackbar v-model="snackbarDelete" message="Task deleted!" />
     <Snackbar v-model="snackbarComplete" message="Status updated!" />
-    
+
   </v-container>
 </template>
 
@@ -54,6 +56,7 @@ import { Inertia } from '@inertiajs/inertia'
 import TaskModal from '@/Components/TaskModal.vue'
 import EditTaskModal from '@/Components/EditTaskModal.vue'
 import TaskActions from '@/Components/TaskActions.vue'
+import Snackbar from '@/Components/Snackbar.vue'
 
 // Props from Laravel
 defineProps({ tasks: Array })
@@ -100,5 +103,9 @@ function toggleComplete(task) {
 // After create/edit, reload
 function reload() {
   Inertia.reload({ preserveScroll: true })
+}
+
+function visitTrash() {
+  Inertia.visit('/tasks/trash')
 }
 </script>
